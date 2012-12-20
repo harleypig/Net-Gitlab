@@ -1,5 +1,7 @@
 package Net::Gitlab;
 
+## no critic( ValuesAndExpressions::ProhibitAccessOfPrivateData )
+
 # ABSTRACT: Put an abstract for Net::Gitlab here
 
 use strict;
@@ -9,18 +11,62 @@ use namespace::autoclean;
 use Carp;
 use JSON;
 use LWP::UserAgent;
-use Params::Validate qw( validate_with validate_pos SCALAR HASHREF );
-use Regexp::Common qw( Email::Address );
+
+#use Params::Validate qw( validate_with validate_pos SCALAR HASHREF );
+use Params::Validate::Checks ':all';
+use Regexp::Common 'Email::Address';
 
 {  # Hide
 
-  my @required_parms = qw( base_url email password );
+  Params::Validate::Checks::register
+    email => qr/$RE{Email}{Address}/,
+    uri   => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/;
 
-  my @other_set_get  = qw(
+  my %validate = (
 
-    branch error hook_id issue_id key_id milestone_id project_id sha snippet_id private_token user_id
+    assignee_id  => { as 'pos_int' },
+    hook_id      => { as 'pos_int' },
+    issue_id     => { as 'pos_int' },
+    key_id       => { as 'pos_int' },
+    milestone_id => { as 'pos_int' },
+    project_id   => { as 'pos_int' },
+    snippet_id   => { as 'pos_int' },
+    user_id      => { as 'pos_int' },
 
-  );
+    issues_enabled         => { type => BOOLEAN },
+    merge_requests_enabled => { type => BOOLEAN },
+    wall_enabled           => { type => BOOLEAN },
+    wiki_enabled           => { type => BOOLEAN },
+
+    access_level   => { as 'string' },  # Are these hard coded into gitlab? if so, we can further restrict this
+    branch         => { as 'string' },
+    closed         => { as 'string' },
+    code           => { as 'string' },
+    default_branch => { as 'string' },
+    description    => { as 'string' },
+    due_date       => { as 'string' },
+    email          => { as 'email' },
+    file_name      => { as 'string' },
+    key            => { as 'string' },
+    labels         => { as 'string' },
+    lifetime       => { as 'string' },
+    linkedin       => { as 'string' },
+    name           => { as 'string' },
+    password       => { as 'string' },
+    path           => { as 'string' },
+    private_token  => { as 'string' },
+    projects_limit => { as 'pos_int' },
+    sha            => { as 'string' },
+    skype          => { as 'string' },
+    title          => { as 'string' },
+    twitter        => { as 'string' },
+    url            => { as 'uri' },
+    username       => { as 'string' },
+
+    base_url => { as 'uri' },
+    error    => { as 'string' },
+
+  ); ## end %validate
 
   my %method = (
 
@@ -28,7 +74,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'session',
-      required => qw( email password )
+      required => [qw( email password )],
 
     },
 
@@ -43,7 +89,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'users/<user_id>',
-      required => qw( user_id )
+      required => [qw( user_id )],
 
     },
 
@@ -51,8 +97,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'users',
-      required => qw( email password username name ),
-      optional => qw(  skype linkedin twitter projects_limit ),
+      required => [qw( email password username name )],
+      optional => [qw( skype linkedin twitter projects_limit )],
 
     },
 
@@ -81,7 +127,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'user/keys/<key_id>',
-      required => qw( user_id )
+      required => [qw( user_id )],
 
     },
 
@@ -89,7 +135,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'user/keys',
-      required => qw( title key )
+      required => [qw( title key )],
 
     },
 
@@ -97,7 +143,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'DELETE',
       path     => 'user/keys/<key_id>',
-      required => qw( key_id )
+      required => [qw( key_id )],
 
     },
 
@@ -112,8 +158,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects',
-      required => qw( name ),
-      optional => qw(  code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled ),
+      required => [qw( name )],
+      optional => [qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled )],
 
     },
 
@@ -121,7 +167,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -129,7 +175,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/repository/branches',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -137,7 +183,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/repository/branches/<branch>',
-      required => qw( project_id branch )
+      required => [qw( project_id branch )],
 
     },
 
@@ -145,7 +191,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/repository/commits',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -153,7 +199,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/repository/commits/<sha>/blob',
-      required => qw( project_id sha )
+      required => [qw( project_id sha )],
 
     },
 
@@ -161,7 +207,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/repository/tags',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -169,7 +215,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/hooks',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -177,7 +223,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/hooks/<hook_id>',
-      required => qw( project_id hook_id )
+      required => [qw( project_id hook_id )],
 
     },
 
@@ -185,7 +231,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/issues',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -193,7 +239,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/issues/<issue_id>',
-      required => qw( project_id issue_id )
+      required => [qw( project_id issue_id )],
 
     },
 
@@ -201,7 +247,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/members',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -209,7 +255,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/members/<user_id>',
-      required => qw( project_id user_id )
+      required => [qw( project_id user_id )],
 
     },
 
@@ -217,7 +263,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/milestones',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -225,7 +271,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/milestones/<milestone_id>',
-      required => qw( project_id milestone_id )
+      required => [qw( project_id milestone_id )],
 
     },
 
@@ -233,7 +279,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/snippets',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -241,7 +287,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/snippets/<snippet_id>',
-      required => qw( project_id snippet_id )
+      required => [qw( project_id snippet_id )],
 
     },
 
@@ -249,7 +295,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'GET',
       path     => 'projects/<project_id>/snippets/<snippet_id>/raw',
-      required => qw( project_id snippet_id )
+      required => [qw( project_id snippet_id )],
 
     },
 
@@ -257,7 +303,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/hooks',
-      required => qw( project_id url )
+      required => [qw( project_id url )],
 
     },
 
@@ -265,8 +311,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/issues',
-      required => qw( project_id title ),
-      optional => qw(  description assignee_id milestone_id labels ),
+      required => [qw( project_id title )],
+      optional => [qw( description assignee_id milestone_id labels )],
 
     },
 
@@ -274,7 +320,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/members',
-      required => qw( project_id user_id )
+      required => [qw( project_id user_id )],
 
     },
 
@@ -282,8 +328,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/milestones',
-      required => qw( project_id title ),
-      optional => qw(  description due_date ),
+      required => [qw( project_id title )],
+      optional => [qw( description due_date )],
 
     },
 
@@ -291,8 +337,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/snippets',
-      required => qw( project_id title file_name code ),
-      optional => qw(  lifetime ),
+      required => [qw( project_id title file_name code )],
+      optional => [qw( lifetime )],
 
     },
 
@@ -300,7 +346,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'POST',
       path     => 'projects/<project_id>/hooks/<hook_id>',
-      required => qw( project_id hook_id url )
+      required => [qw( project_id hook_id url )],
 
     },
 
@@ -308,8 +354,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'PUT',
       path     => 'projects/<project_id>/issues/<issue_id>',
-      required => qw( project_id issue_id ),
-      optional => qw(  title description assignee_id milestone_id labels ),
+      required => [qw( project_id issue_id )],
+      optional => [qw( title description assignee_id milestone_id labels )],
 
     },
 
@@ -317,7 +363,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'PUT',
       path     => 'projects/<project_id>/members/<user_id>',
-      required => qw( project_id user_id access_level )
+      required => [qw( project_id user_id access_level )],
 
     },
 
@@ -325,8 +371,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'PUT',
       path     => 'projects/<project_id>/milestones/<milestone_id>',
-      required => qw( project_id milestone_id ),
-      optional => qw(  title description due_date closed ),
+      required => [qw( project_id milestone_id )],
+      optional => [qw( title description due_date closed )],
 
     },
 
@@ -334,8 +380,8 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'PUT',
       path     => 'projects/<project_id>/snippets/<snippet_id>',
-      required => qw( project_id snippet_id ),
-      optional => qw(  title file_name lifetime code ),
+      required => [qw( project_id snippet_id )],
+      optional => [qw( title file_name lifetime code )],
 
     },
 
@@ -343,7 +389,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'DELETE',
       path     => 'projects/<project_id>/hooks',
-      required => qw( project_id )
+      required => [qw( project_id )],
 
     },
 
@@ -351,7 +397,7 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'DELETE',
       path     => 'projects/<project_id>/members/<user_id>',
-      required => qw( project_id user_id )
+      required => [qw( project_id user_id )],
 
     },
 
@@ -359,35 +405,28 @@ use Regexp::Common qw( Email::Address );
 
       action   => 'DELETE',
       path     => 'projects/<project_id>/snippets/<snippet_id>',
-      required => qw( project_id snipped_id )
+      required => [qw( project_id snippet_id )],
 
     },
 
-  );
+  ); ## end %method
 
-  my ( %action, @methods );
+  my $valid_methods = join '|', sort keys %method;
 
-  for my $method ( keys %method ) {
-
-    push @methods, $method;
-    $action{ $method{ $method }->{ action } }++;
-
-  }
-
-  my $valid_methods = join '|', sort @valid_methods;
-  my $valid_actions = join '|', sort keys %action;
+  ###############################################################################
 
   sub _set_get {
 
     my $self = shift;
+    my $key  = shift;
 
-    my ( $key, $value ) = validate_pos(
-      @_,
+    croak "unknown attribute ($key)"
+      unless exists $validate{ $key };
 
-      { type => SCALAR },
-      { type => SCALAR, optional => 1 },
+    my $validate = $validate{ $key };
+    $validate->{ optional } = 1;
 
-    );
+    my ( $value ) = validate_pos( @_, $validate );
 
     if ( defined $value ) {
 
@@ -396,7 +435,7 @@ use Regexp::Common qw( Email::Address );
 
     } else {
 
-      croak "$key does not exist"
+      croak "$key has not been set"
         unless exists $self->{ $key };
 
       return $self->{ $key };
@@ -404,37 +443,116 @@ use Regexp::Common qw( Email::Address );
     }
   } ## end sub _set_get
 
-#########################################
-  my ( $new_spec, $session_spec );
+  sub _method {
 
-  for my $parm ( @required_parms, @other_set_get ) {
+    my $self = shift;
+    my $m    = shift;
 
-    eval "sub $parm { shift->_set_get( '$parm', \@_ ) }";
-    croak $@ if $@;
+    croak "unkown method ($m)"
+      unless exists $method{ $m };
 
-    next if grep { /$parm/ } @other_set_get;
+    my $method = $method{ $m };
 
-    $new_spec->{ $parm } = $session_spec->{ $parm } = { type => SCALAR };
-    $new_spec->{ $parm }{ optional } = 1;
+    my $spec;
 
-  }
+    if ( exists $method->{ required } ) {
 
-  $new_spec->{ base_url }{ regex } = qr/$RE{URI}{HTTP}{-scheme => 'https?'}/;
-  $new_spec->{ email }{ regex }    = qr/$RE{Email}{Address}/;
-#########################################
+      croak "required needs to be an arrayref"
+        unless ref $method->{ required } eq 'ARRAY';
+
+      $spec->{ $_ } = $validate{ $_ } for @{ $method->{ required } };
+
+    }
+
+    if ( exists $method->{ optional } ) {
+
+      croak "optional needs to be an arrayref"
+        unless ref $method->{ optional } eq 'ARRAY';
+
+      for my $parm ( @{ $method->{ optional } } ) {
+
+        croak "oops ... duplicate key ($parm) in optional and required arrays for method $m"
+          if exists $spec->{ $parm };
+
+        $spec->{ $parm } = $validate{ $parm };
+        $spec->{ $parm }{ optional } = 1;
+
+      }
+    }
+
+    my %data;
+    %data = validate_with( \@_, spec => $spec )
+      if keys %$spec;
+
+    if ( keys %data ) {
+
+      return $self->call_api( $m, \%data );
+
+    } else {
+
+      return $self->call_api( $m );
+
+    }
+  } ## end sub _method
+
+  our $AUTOLOAD;
+
+  sub AUTOLOAD {
+
+    my $self = shift;
+
+    ( my $call = $AUTOLOAD ) =~ s/^.*:://;
+
+    my $sub;
+
+    if ( exists $validate{ $call } ) {
+
+      $sub = sub { shift->_set_get( $call, @_ ) };
+
+    } elsif ( exists $method{ $call } ) {
+
+      $sub = sub { shift->_method( $call, @_ ) };
+
+    } else {
+
+      croak "Don't know  how to handle $call";
+
+    }
+
+    no strict 'refs'; ## no critic( TestingAndDebugging::ProhibitNoStrict )
+    *$AUTOLOAD = $sub;
+
+    unshift @_, $self;
+
+    goto &$AUTOLOAD;
+
+  } ## end sub AUTOLOAD
+
+  DESTROY { }
 
   sub new {
 
     my $class = shift;
     my $self = bless {}, ref $class || $class;
 
-    my %arg = validate_with( params => \@_, spec => $new_spec );
+    my $validate;
+
+    for my $k ( keys %validate ) {
+
+      $validate->{ $k } = $validate{ $k };
+      $validate->{ $k }{ optional } = 1;
+
+    }
+
+    $DB::single = 1;
+
+    my %arg = validate_with( params => \@_, spec => $validate );
 
     $self->$_( $arg{ $_ } ) for keys %arg;
 
     return $self;
 
-  }
+  } ## end sub new
 
   sub _ua { shift->{ ua } ||= LWP::UserAgent->new }
 
@@ -442,28 +560,31 @@ use Regexp::Common qw( Email::Address );
 
     my $self = shift;
 
-    my ( $action, $method, $data ) = validate_pos(
+    my ( $method, $data ) = validate_pos(
       @_,
 
-      { type => SCALAR,  regex    => qr/^($valid_actions)$/i },
-      { type => SCALAR,  regex    => qr/^($valid_methods)$/ },
+      { type => SCALAR, regex => qr/^($valid_methods)$/ },
       { type => HASHREF },
 
     );
 
-    $action = uc $action;
+    croak "no action specified for $method"
+      unless exists $method{ $method }->{ action };
+
+    my $action = $method{ $method }->{ action };
     my $url = sprintf "%s/%s", $self->base_url, $method{ $method }->{ path };
 
-    $url =~ s/<$_>/delete $data{ $_ }/ge;
-      for $url =~ /<([^>]*)>/g;
+    $url =~ s/<$_>/delete $data->{ $_ }/ge for $url =~ /<([^>]*)>/g;
 
     my $req = HTTP::Request->new( $action => $url );
 
-    $req->header( $field => $self->private_token );
+    $req->content_type( 'application/json' );
+
+    $req->header( 'private_token' => $self->private_token )
       unless $method eq '/session';
 
-    $req->content_type( 'application/json' );
-    $req->content( encode_json $data );
+    $req->content( encode_json $data )
+      if keys %$data;
 
     my $res = $self->_ua->request( $req );
 
@@ -473,71 +594,11 @@ use Regexp::Common qw( Email::Address );
 
     } else {
 
-      $error = $res->status_line;
-      return undef;
+      $self->error( $res->status_line );
+      return;
 
     }
   } ## end sub call_api
-
-###############################################################################################
-
-  #sub session {
-  #
-  #  my ( $email, $password ) = @_;
-  #
-  #  croak "email required" unless $email ne '';
-  #  croak "password required" unless $password ne '';
-  #
-  #  my $data    = { 'email' => $email, 'password' => $password };
-  #  my $url     = "${base_url}/session";
-  #  my $session = post( $url, $data ) or croak "Problem: $error";
-  #
-  #  return $session;
-  #
-  #}
-  #
-  #sub user_add {
-  #
-  #  my $arg = shift;
-  #
-  #  croak "expecting hashref" unless ref $arg eq 'HASH';
-  #
-  #  my @fields = qw( email password username name );
-  #
-  #  my @missing = grep { exists $arg->{ $_ } } @fields;
-  #
-  #  if ( @missing ) {
-  #
-  #    my $missing = join ', ' @missing;
-  #    croak "$missing required";
-  #
-  #  }
-  #
-  #  # these are optional
-  #  push @fields, qw( skype linkedin twitter projects_limit );
-  #
-  #  my $data;
-  #
-  #  for my $field ( @fields ) {
-  #
-  #    $data->{ $field } = $arg->{ $field }
-  #      if exists $arg->{ $field };
-  #
-  #  }
-  #
-  #  my $json = encode_json $data;
-  #  my $url  = "${base_url}/users";
-  #
-  #}
-  #
-  #my $session = session( $email, $password );
-  #my $token = $session->{ private_token };
-  #
-  # [ email password username name ]
-  #my @users = (
-  #
-  #  [
-  #);
 
 };  # No more hiding
 
