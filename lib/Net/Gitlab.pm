@@ -2,7 +2,17 @@ package Net::Gitlab;
 
 ## no critic( ValuesAndExpressions::ProhibitAccessOfPrivateData )
 
-# ABSTRACT: Put an abstract for Net::Gitlab here
+# ABSTRACT: Talk to a Gitlab installation via its API.
+
+=head1 METHODS
+
+=head2 new
+
+Create a new instance of a Gitlab object.
+
+=cut
+
+# VERSION
 
 use strict;
 use warnings;
@@ -486,11 +496,11 @@ use Regexp::Common 'Email::Address';
 
     if ( keys %data ) {
 
-      return $self->call_api( $m, \%data );
+      return $self->_call_api( $m, \%data );
 
     } else {
 
-      return $self->call_api( $m );
+      return $self->_call_api( $m );
 
     }
   } ## end sub _method
@@ -556,7 +566,7 @@ use Regexp::Common 'Email::Address';
 
   sub _ua { shift->{ ua } ||= LWP::UserAgent->new }
 
-  sub call_api {
+  sub _call_api {
 
     my $self = shift;
 
@@ -598,7 +608,7 @@ use Regexp::Common 'Email::Address';
       return;
 
     }
-  } ## end sub call_api
+  } ## end sub _call_api
 
 };  # No more hiding
 
