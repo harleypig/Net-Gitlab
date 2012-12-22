@@ -12,8 +12,6 @@ Create a new instance of a Gitlab object.
 
 =cut
 
-# VERSION
-
 use strict;
 use warnings;
 use namespace::autoclean;
@@ -22,9 +20,10 @@ use Carp;
 use JSON;
 use LWP::UserAgent;
 
-#use Params::Validate qw( validate_with validate_pos SCALAR HASHREF );
 use Params::Validate::Checks ':all';
 use Regexp::Common 'Email::Address';
+
+# VERSION
 
 {  # Hide
 
