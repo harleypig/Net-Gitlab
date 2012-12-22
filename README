@@ -1,8 +1,12 @@
 NAME
-    Net::Gitlab - Put an abstract for Net::Gitlab here
+    Net::Gitlab - Talk to a Gitlab installation via its API.
 
 VERSION
       This document describes v0.01 of Net::Gitlab - released December 21, 2012 as part of Net-Gitlab.
+
+METHODS
+  new
+    Create a new instance of a Gitlab object.
 
 INSTALLATION
     See perlmodinstall for information and options on installing Perl
