@@ -106,7 +106,7 @@ use Regexp::Common 'Email::Address';
 
       action   => 'POST',
       path     => 'users',
-      required => [qw( email password username name )],
+      required => [qw( email password name )],
       optional => [qw( skype linkedin twitter projects_limit )],
 
     },
@@ -490,7 +490,7 @@ use Regexp::Common 'Email::Address';
     }
 
     my %data;
-    %data = validate_with( \@_, spec => $spec )
+    %data = validate_with( params => \@_, spec => $spec )
       if keys %$spec;
 
     if ( keys %data ) {
@@ -553,8 +553,6 @@ use Regexp::Common 'Email::Address';
 
     }
 
-    $DB::single = 1;
-
     my %arg = validate_with( params => \@_, spec => $validate );
 
     $self->$_( $arg{ $_ } ) for keys %arg;
@@ -569,28 +567,32 @@ use Regexp::Common 'Email::Address';
 
     my $self = shift;
 
-    my ( $method, $data ) = validate_pos(
-      @_,
+    my @specs = { type => SCALAR, regex => qr/^($valid_methods)$/ };
 
-      { type => SCALAR, regex => qr/^($valid_methods)$/ },
-      { type => HASHREF },
+    push @specs, { type => HASHREF }
+      if @_ > 1;
 
-    );
+    my ( $m, $data ) = validate_pos( @_, @specs );
 
-    croak "no action specified for $method"
-      unless exists $method{ $method }->{ action };
+    croak "no action specified for $m"
+      unless exists $method{ $m }->{ action };
 
-    my $action = $method{ $method }->{ action };
-    my $url = sprintf "%s/%s", $self->base_url, $method{ $method }->{ path };
+    my $method = $method{ $m };
+
+    my $action = $method->{ action };
+    my $url = sprintf "%s/%s", $self->base_url, $method->{ path };
 
     $url =~ s/<$_>/delete $data->{ $_ }/ge for $url =~ /<([^>]*)>/g;
+
+#    $url .= sprintf '?private_token=%s', $self->private_token
+#       unless $method->{ path } eq '/session';
 
     my $req = HTTP::Request->new( $action => $url );
 
     $req->content_type( 'application/json' );
 
     $req->header( 'private_token' => $self->private_token )
-      unless $method eq '/session';
+      unless $method->{ path } eq '/session';
 
     $req->content( encode_json $data )
       if keys %$data;
