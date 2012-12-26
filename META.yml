@@ -32,8 +32,9 @@ requires:
   LWP::UserAgent: 0
   Params::Validate::Checks: 0
   Regexp::Common: 0
+  Regexp::Common::Email::Address: 0
   namespace::autoclean: 0
   strict: 0
   warnings: 0
 resources: {}
-version: 0.01
+version: 0.02

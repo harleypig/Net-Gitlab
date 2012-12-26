@@ -1,6 +1,8 @@
 
 BEGIN {
 
+  $DB::single = 1;
+
   unless ( $ENV{ AUTHOR_TESTING } ) {
 
     require Test::More;
@@ -8,14 +10,17 @@ BEGIN {
 
   }
 
-  unless ( $ENV{ GITLAB_EMAIL } && $ENV{ GITLAB_PASSWORD } && $ENV{ GITLAB_BASEURL } ) {
+  unless ( exists $ENV{ GITLAB_EMAIL }
+    && exists $ENV{ GITLAB_PASSWORD }
+    && exists $ENV{ GITLAB_BASEURL } ) {
 
     require Test::More;
-    Test::More::plan( skip_all => 'GITLAB_EMAIL, GITLAB_PASSWORD and GITLAB_BASEURL must be set to run this test' )
+    Test::More::plan(
+      skip_all => 'Environment variables GITLAB_EMAIL, GITLAB_PASSWORD and GITLAB_BASEURL must be set to run this test' )
 
   }
 
-}
+} ## end BEGIN
 
 use strict;
 use warnings;
@@ -32,4 +37,3 @@ isa_ok( $test_login, 'Net::Gitlab', 'object instantiated with base_url' );
 ok( $test_login->base_url, $ENV{ GITLAB_BASEURL } );
 
 #my $user = $session->login( email => $ENV{ GITLAB_EMAIL }, password => $ENV{ GITLAB_PASSWORD } );
-

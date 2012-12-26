@@ -26,7 +26,7 @@ my %module_build_args = (
     "Alan Young <harleypig\@gmail.com>"
   ],
   "dist_name" => "Net-Gitlab",
-  "dist_version" => "0.01",
+  "dist_version" => "0.02",
   "license" => "perl",
   "module_name" => "Net::Gitlab",
   "recommends" => {},
@@ -37,6 +37,7 @@ my %module_build_args = (
     "LWP::UserAgent" => 0,
     "Params::Validate::Checks" => 0,
     "Regexp::Common" => 0,
+    "Regexp::Common::Email::Address" => 0,
     "namespace::autoclean" => 0,
     "strict" => 0,
     "warnings" => 0

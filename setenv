@@ -1,4 +1,5 @@
-export AUTHOR_TESTING=1
+#!/bin/bash
+
 export GITLAB_BASEURL='http://gl.harleydev.com/api/v2'
 export GITLAB_EMAIL='alan.young@verio.net'
 export GITLAB_PASSWORD='j!nx4#vmt'
