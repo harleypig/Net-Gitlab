@@ -28,8 +28,9 @@ use Regexp::Common 'Email::Address';
 {  # Hide
 
   Params::Validate::Checks::register
-    email => qr/$RE{Email}{Address}/,
-    uri   => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/;
+    email          => qr/$RE{Email}{Address}/,
+    uri            => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/,
+    short_password => sub { length $_[0] > 6 };
 
   my %validate = (
 
@@ -61,7 +62,7 @@ use Regexp::Common 'Email::Address';
     lifetime       => { as 'string' },
     linkedin       => { as 'string' },
     name           => { as 'string' },
-    password       => { as 'string' },
+    password       => { as 'string', as 'short_password' },
     path           => { as 'string' },
     private_token  => { as 'string' },
     projects_limit => { as 'pos_int' },

@@ -1,6 +1,7 @@
 Revision history for Net-Gitlab
 
 {{$NEXT}}
+  - add password length checking
 
 0.02      2012-12-25 20:36:13 America/Boise
   - fix stupid error in parm handling
