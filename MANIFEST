@@ -10,7 +10,6 @@ README
 README.md
 lib/Net/Gitlab.pm
 perltidy.LOG
-setenv
 t/00-check-deps.t
 t/00-compile.t
 t/00-load.t

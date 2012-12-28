@@ -16,13 +16,14 @@ use LWP::UserAgent;
 use Params::Validate::Checks ':all';
 use Regexp::Common 'Email::Address';
 
-our $VERSION = '0.02'; # VERSION
+our $VERSION = '0.03'; # VERSION
 
 {  # Hide
 
   Params::Validate::Checks::register
-    email => qr/$RE{Email}{Address}/,
-    uri   => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/;
+    email          => qr/$RE{Email}{Address}/,
+    uri            => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/,
+    short_password => sub { length $_[0] > 6 };
 
   my %validate = (
 
@@ -40,7 +41,7 @@ our $VERSION = '0.02'; # VERSION
     wall_enabled           => { type => BOOLEAN },
     wiki_enabled           => { type => BOOLEAN },
 
-    access_level   => { as 'string' },  # Are these hard coded into gitlab? if so, we can further restrict this
+    access_level   => { as 'string' },                      # Are these hard coded into gitlab? if so, we can further restrict this
     branch         => { as 'string' },
     closed         => { as 'string' },
     code           => { as 'string' },
@@ -54,7 +55,7 @@ our $VERSION = '0.02'; # VERSION
     lifetime       => { as 'string' },
     linkedin       => { as 'string' },
     name           => { as 'string' },
-    password       => { as 'string' },
+    password       => { as 'string', as 'short_password' },
     path           => { as 'string' },
     private_token  => { as 'string' },
     projects_limit => { as 'pos_int' },
@@ -622,7 +623,7 @@ Net::Gitlab - Talk to a Gitlab installation via its API.
 
 =head1 VERSION
 
-  This document describes v0.02 of Net::Gitlab - released December 25, 2012 as part of Net-Gitlab.
+  This document describes v0.03 of Net::Gitlab - released December 28, 2012 as part of Net-Gitlab.
 
 =head1 METHODS
 
