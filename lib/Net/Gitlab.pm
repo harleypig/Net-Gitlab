@@ -107,8 +107,8 @@ use Regexp::Common 'Email::Address';
 
       action   => 'POST',
       path     => 'users',
-      required => [qw( email password name )],
-      optional => [qw( skype linkedin twitter projects_limit )],
+      required => [qw( email password username name )],
+      optional => [qw( skype linkedin twitter projects_limit extern_uid provider bio )],
 
     },
 
