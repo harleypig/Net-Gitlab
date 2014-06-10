@@ -75,6 +75,7 @@ use Regexp::Common 'Email::Address';
 
     base_url => { as 'uri' },
     error    => { as 'string' },
+    status_code => { as 'pos_int' },
 
   ); ## end %validate
 
@@ -614,6 +615,7 @@ use Regexp::Common 'Email::Address';
       if keys %$data;
 
     my $res = $self->_ua->request( $req );
+    $self->status_code( $res->code );
 
     if ( $res->is_success ) {
 
