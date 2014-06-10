@@ -419,6 +419,21 @@ use Regexp::Common 'Email::Address';
 
     },
 
+    groups => {
+
+      action   => 'GET',
+      path     => 'groups',
+
+    },
+
+    add_group => {
+
+      action   => 'POST',
+      path     => 'groups',
+      required => [qw( name path )],
+
+    },
+
   ); ## end %method
 
   my $valid_methods = join '|', sort keys %method;
