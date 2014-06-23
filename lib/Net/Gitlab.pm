@@ -75,6 +75,7 @@ use Regexp::Common 'Email::Address';
 
     base_url => { as 'uri' },
     error    => { as 'string' },
+    status_code => { as 'pos_int' },
 
   ); ## end %validate
 
@@ -169,7 +170,7 @@ use Regexp::Common 'Email::Address';
       action   => 'POST',
       path     => 'projects',
       required => [qw( name )],
-      optional => [qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled )],
+      optional => [qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled namespace_id )],
 
     },
 
@@ -329,8 +330,9 @@ use Regexp::Common 'Email::Address';
     add_member => {
 
       action   => 'POST',
-      path     => 'projects/<project_id>/members',
-      required => [qw( project_id user_id )],
+      path     => 'projects/<id>/members',
+      required => [qw( id user_id )],
+      optional => [qw( access_level )],
 
     },
 
@@ -416,6 +418,21 @@ use Regexp::Common 'Email::Address';
       action   => 'DELETE',
       path     => 'projects/<project_id>/snippets/<snippet_id>',
       required => [qw( project_id snippet_id )],
+
+    },
+
+    groups => {
+
+      action   => 'GET',
+      path     => 'groups',
+
+    },
+
+    add_group => {
+
+      action   => 'POST',
+      path     => 'groups',
+      required => [qw( name path )],
 
     },
 
@@ -599,6 +616,7 @@ use Regexp::Common 'Email::Address';
       if keys %$data;
 
     my $res = $self->_ua->request( $req );
+    $self->status_code( $res->code );
 
     if ( $res->is_success ) {
 
