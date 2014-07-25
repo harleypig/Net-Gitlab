@@ -170,7 +170,7 @@ use Regexp::Common 'Email::Address';
       action   => 'POST',
       path     => 'projects',
       required => [qw( name )],
-      optional => [qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled namespace_id )],
+      optional => [qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled namespace_id visibility_level )],
 
     },
 
