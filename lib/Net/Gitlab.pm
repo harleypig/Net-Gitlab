@@ -5,16 +5,20 @@ package Net::Gitlab;
 # ABSTRACT: Talk to a Gitlab installation via its API.
 
 
+use utf8;
 use strict;
 use warnings;
 use namespace::autoclean;
 
 use Carp;
+use HTTP::Request ();
 use JSON;
-use LWP::UserAgent;
-
+use LWP::UserAgent ();
 use Params::Validate::Checks ':all';
+use Readonly;
 use Regexp::Common 'Email::Address';
+
+Readonly my $PASSWD_LENGTH = 6;
 
 our $VERSION = '0.04'; # VERSION
 
@@ -23,7 +27,7 @@ our $VERSION = '0.04'; # VERSION
   Params::Validate::Checks::register
     email          => qr/$RE{Email}{Address}/,
     uri            => qr/$RE{URI}{HTTP}{-scheme => 'https?'}/,
-    short_password => sub { length $_[0] > 6 };
+    short_password => sub { length $_[0] > $PASSWD_LENGTH };
 
   my %validate = (
 
@@ -41,7 +45,8 @@ our $VERSION = '0.04'; # VERSION
     wall_enabled           => { type => BOOLEAN },
     wiki_enabled           => { type => BOOLEAN },
 
-    access_level   => { as 'string' },                      # Are these hard coded into gitlab? if so, we can further restrict this
+    # Are these hard coded into gitlab? if so, we can further restrict this
+    access_level   => { as 'string' },
     branch         => { as 'string' },
     closed         => { as 'string' },
     code           => { as 'string' },
@@ -73,6 +78,8 @@ our $VERSION = '0.04'; # VERSION
   ); ## end %validate
 
   my %method = (
+
+    ## no critic qw( Tics::ProhibitLongLines )
 
     login => {
 
@@ -164,7 +171,7 @@ our $VERSION = '0.04'; # VERSION
       path     => 'projects',
       required => [qw( name )],
       optional => [
-        qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled namespace_id visibility_level )
+        qw( code path description default_branch issues_enabled wall_enabled merge_requests_enabled wiki_enabled namespace_id visibility_level ),
       ],
 
     },
@@ -439,8 +446,7 @@ our $VERSION = '0.04'; # VERSION
 
   sub _set_get {
 
-    my $self = shift;
-    my $key  = shift;
+    my ( $self, $key ) = @_;
 
     croak "unknown attribute ($key)"
       unless exists $validate{ $key };
@@ -479,7 +485,7 @@ our $VERSION = '0.04'; # VERSION
 
     if ( exists $method->{ required } ) {
 
-      croak "required needs to be an arrayref"
+      croak 'required needs to be an arrayref'
         unless ref $method->{ required } eq 'ARRAY';
 
       $spec->{ $_ } = $validate{ $_ } for @{ $method->{ required } };
@@ -488,7 +494,7 @@ our $VERSION = '0.04'; # VERSION
 
     if ( exists $method->{ optional } ) {
 
-      croak "optional needs to be an arrayref"
+      croak 'optional needs to be an arrayref'
         unless ref $method->{ optional } eq 'ARRAY';
 
       for my $parm ( @{ $method->{ optional } } ) {
@@ -504,7 +510,7 @@ our $VERSION = '0.04'; # VERSION
 
     my %data;
     %data = validate_with( params => \@_, spec => $spec )
-      if keys %$spec;
+      if keys %$spec; ## no critic qw( References::ProhibitDoubleSigils )
 
     if ( keys %data ) {
 
@@ -519,7 +525,7 @@ our $VERSION = '0.04'; # VERSION
 
   our $AUTOLOAD;
 
-  sub AUTOLOAD {
+  sub AUTOLOAD { ## no critic qw( ClassHierarchies::ProhibitAutoloading )
 
     my $self = shift;
 
@@ -541,6 +547,7 @@ our $VERSION = '0.04'; # VERSION
 
     }
 
+    ## no critic qw( References::ProhibitDoubleSigils )
     no strict 'refs'; ## no critic( TestingAndDebugging::ProhibitNoStrict )
     *$AUTOLOAD = $sub;
 
@@ -574,7 +581,7 @@ our $VERSION = '0.04'; # VERSION
 
   } ## end sub new
 
-  sub _ua { shift->{ ua } ||= LWP::UserAgent->new }
+  sub _ua { shift->{ ua } ||= LWP::UserAgent->new() }
 
   sub _call_api {
 
@@ -583,7 +590,7 @@ our $VERSION = '0.04'; # VERSION
     my @specs = { type => SCALAR, regex => qr/^($valid_methods)$/ };
 
     push @specs, { type => HASHREF }
-      if @_ > 1;
+      if scalar @_ > 1;
 
     my ( $m, $data ) = validate_pos( @_, @specs );
 
@@ -593,25 +600,22 @@ our $VERSION = '0.04'; # VERSION
     my $method = $method{ $m };
 
     my $action = $method->{ action };
-    my $url = sprintf "%s/%s", $self->base_url, $method->{ path };
+    my $url = sprintf '%s/%s', $self->base_url(), $method->{ path };
 
     $url =~ s/<$_>/delete $data->{ $_ }/ge for $url =~ /<([^>]*)>/g;
-
-    #    $url .= sprintf '?private_token=%s', $self->private_token
-    #       unless $method->{ path } eq '/session';
 
     my $req = HTTP::Request->new( $action => $url );
 
     $req->content_type( 'application/json' );
 
-    $req->header( 'private_token' => $self->private_token )
+    $req->header( 'private_token' => $self->private_token() )
       unless $method->{ path } eq '/session';
 
     $req->content( encode_json $data )
-      if keys %$data;
+      if keys %$data; ## no critic ( References::ProhibitDoubleSigils )
 
     my $res = $self->_ua->request( $req );
-    $self->status_code( $res->code );
+    $self->status_code( $res->code() );
 
     if ( $res->is_success ) {
 
@@ -623,9 +627,8 @@ our $VERSION = '0.04'; # VERSION
       return;
 
     }
-  } ## end sub _call_api
-
-};  # No more hiding
+  }; ## end sub _call_api
+}  # No more hiding
 
 1;
 
