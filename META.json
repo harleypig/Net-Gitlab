@@ -62,16 +62,13 @@
       },
       "test" : {
          "requires" : {
-            "File::Spec" : "0",
-            "IO::Handle" : "0",
-            "IPC::Open3" : "0",
             "Scalar::Util" : "0",
             "Test::CheckDeps" : "0.010",
             "Test::More" : "0.94",
             "Test::Most" : "0",
             "Test::NoWarnings" : "0",
             "Test::UseAllModules" : "0",
-            "perl" : "5.006"
+            "perl" : "5.004"
          }
       }
    },

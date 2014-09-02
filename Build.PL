@@ -39,24 +39,18 @@ my %module_build_args = (
   },
   "script_files" => [],
   "test_requires" => {
-    "File::Spec" => 0,
-    "IO::Handle" => 0,
-    "IPC::Open3" => 0,
     "Scalar::Util" => 0,
     "Test::CheckDeps" => "0.010",
     "Test::More" => "0.94",
     "Test::Most" => 0,
     "Test::NoWarnings" => 0,
     "Test::UseAllModules" => 0,
-    "perl" => "5.006"
+    "perl" => "5.004"
   }
 );
 
 
 my %fallback_build_requires = (
-  "File::Spec" => 0,
-  "IO::Handle" => 0,
-  "IPC::Open3" => 0,
   "Module::Build" => "0.28",
   "Scalar::Util" => 0,
   "Test::CheckDeps" => "0.010",
@@ -64,7 +58,7 @@ my %fallback_build_requires = (
   "Test::Most" => 0,
   "Test::NoWarnings" => 0,
   "Test::UseAllModules" => 0,
-  "perl" => "5.006"
+  "perl" => "5.004"
 );
 
 

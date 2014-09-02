@@ -10,7 +10,6 @@ README
 README.md
 lib/Net/Gitlab.pm
 t/00-check-deps.t
-t/00-compile.t
 t/00-load.t
 t/000-report-versions.t
 t/100-coverage.t
