@@ -34,6 +34,5 @@ t/release-pod-no404s.t
 t/release-pod-syntax.t
 t/release-portability.t
 t/release-synopsis.t
-t/release-test-legal.t
 t/release-test-version.t
 t/release-unused-vars.t
