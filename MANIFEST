@@ -17,7 +17,6 @@ t/150-basic.t
 t/author-critic.t
 t/author-login.t
 t/author-no-tabs.t
-t/author-pod-spell.t
 t/author-test-eol.t
 t/release-check-changes.t
 t/release-check-manifest.t
