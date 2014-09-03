@@ -2,7 +2,7 @@ NAME
     Net::Gitlab - Talk to a Gitlab installation via its API.
 
 VERSION
-      This document describes v0.03 of Net::Gitlab - released December 28, 2012 as part of Net-Gitlab.
+      This document describes v0.04 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
 
 METHODS
   new
@@ -12,11 +12,16 @@ INSTALLATION
     See perlmodinstall for information and options on installing Perl
     modules.
 
+SOURCE
+    The development version is on github at
+    <http://https://github.com/harleypig/Net-Gitlab> and may be cloned from
+    <git://https://github.com/harleypig/Net-Gitlab.git>
+
 AUTHOR
     Alan Young <harleypig@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Alan Young.
+    This software is copyright (c) 2014 by Alan Young.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
