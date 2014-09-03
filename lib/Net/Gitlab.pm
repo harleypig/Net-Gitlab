@@ -646,7 +646,7 @@ Net::Gitlab - Talk to a Gitlab installation via its API.
 
 =head1 VERSION
 
-  This document describes v0.04 of Net::Gitlab - released September 02, 2014 as part of Net-Gitlab.
+  This document describes v0.04 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
 
 =head1 METHODS
 
@@ -664,7 +664,7 @@ Alan Young <harleypig@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Alan Young.
+This software is copyright (c) 2014 by Alan Young.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
