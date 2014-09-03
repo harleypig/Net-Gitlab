@@ -14,7 +14,6 @@ t/00-load.t
 t/000-report-versions.t
 t/100-coverage.t
 t/150-basic.t
-t/author-critic.t
 t/author-login.t
 t/author-test-eol.t
 t/release-check-changes.t
