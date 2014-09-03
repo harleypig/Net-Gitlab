@@ -37,5 +37,8 @@ requires:
   strict: '0'
   utf8: '0'
   warnings: '0'
-resources: {}
+resources:
+  bugtracker: https://github.com/harleypig/Net-Gitlab/issues
+  homepage: https://metacpan.org/release/Net-Gitlab
+  repository: https://github.com/harleypig/Net-Gitlab.git
 version: '0.04'

@@ -12,6 +12,11 @@ INSTALLATION
     See perlmodinstall for information and options on installing Perl
     modules.
 
+SOURCE
+    The development version is on github at
+    <http://https://github.com/harleypig/Net-Gitlab> and may be cloned from
+    <git://https://github.com/harleypig/Net-Gitlab.git>
+
 AUTHOR
     Alan Young <harleypig@gmail.com>
 

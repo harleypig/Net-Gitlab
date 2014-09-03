@@ -71,7 +71,15 @@
    },
    "release_status" : "stable",
    "resources" : {
-      "repository" : {}
+      "bugtracker" : {
+         "web" : "https://github.com/harleypig/Net-Gitlab/issues"
+      },
+      "homepage" : "https://metacpan.org/release/Net-Gitlab",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/harleypig/Net-Gitlab.git",
+         "web" : "https://github.com/harleypig/Net-Gitlab"
+      }
    },
    "version" : "0.04"
 }

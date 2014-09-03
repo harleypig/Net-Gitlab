@@ -658,6 +658,11 @@ Create a new instance of a Gitlab object.
 
 See perlmodinstall for information and options on installing Perl modules.
 
+=head1 SOURCE
+
+The development version is on github at L<http://https://github.com/harleypig/Net-Gitlab>
+and may be cloned from L<git://https://github.com/harleypig/Net-Gitlab.git>
+
 =head1 AUTHOR
 
 Alan Young <harleypig@gmail.com>
