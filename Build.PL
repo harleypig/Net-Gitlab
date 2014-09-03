@@ -18,7 +18,7 @@ my %module_build_args = (
     "Alan Young <harleypig\@gmail.com>"
   ],
   "dist_name" => "Net-Gitlab",
-  "dist_version" => "0.04",
+  "dist_version" => "0.05",
   "license" => "perl",
   "module_name" => "Net::Gitlab",
   "recommends" => {},

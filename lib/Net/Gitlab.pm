@@ -20,7 +20,7 @@ use Regexp::Common 'Email::Address';
 
 Readonly my $PASSWD_LENGTH = 6;
 
-our $VERSION = '0.04'; # VERSION
+our $VERSION = '0.05'; # VERSION
 
 {  # Hide
 
@@ -642,7 +642,7 @@ Net::Gitlab - Talk to a Gitlab installation via its API.
 
 =head1 VERSION
 
-  This document describes v0.04 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
+  This document describes v0.05 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
 
 =head1 METHODS
 

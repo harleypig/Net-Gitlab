@@ -50,4 +50,4 @@ resources:
   bugtracker: http://github.com/harleypig/Net-Gitlab/issues
   homepage: http://metacpan.org/release/Net-Gitlab
   repository: https://github.com/harleypig/Net-Gitlab.git
-version: '0.04'
+version: '0.05'
