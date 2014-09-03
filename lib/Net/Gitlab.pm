@@ -636,10 +636,6 @@ __END__
 
 =pod
 
-=encoding utf-8
-
-=for :stopwords Alan Young
-
 =head1 NAME
 
 Net::Gitlab - Talk to a Gitlab installation via its API.
