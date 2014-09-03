@@ -85,7 +85,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Create a `clone()' method if you need copies of objects.
-[Bangs::ProhibitRefProtoOrProto]
+[-Bangs::ProhibitRefProtoOrProto]
 # set_themes                         = bangs complexity
 # add_themes                         =
 # severity                           = 4
@@ -101,7 +101,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Don't use generic variable names.
-[Bangs::ProhibitVagueNames]
+[-Bangs::ProhibitVagueNames]
 # set_themes                         = bangs readability
 # add_themes                         =
 # severity                           = 3
@@ -292,7 +292,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 # allow_leading_tabs = 1
 
 
-[CodeLayout::ProhibitHashBarewords]
+[-CodeLayout::ProhibitHashBarewords]
 # set_themes                         = itch
 # add_themes                         =
 # severity                           = 3
@@ -331,7 +331,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 # strict = 0
 
 
-[CodeLayout::ProhibitSpaceIndentation]
+[-CodeLayout::ProhibitSpaceIndentation]
 # set_themes                         = cosmetic
 # add_themes                         =
 # severity                           = 2
@@ -416,7 +416,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Use tabs for indenting, spaces for aligning.
-[CodeLayout::TabIndentSpaceAlign]
+[-CodeLayout::TabIndentSpaceAlign]
 # set_themes                         = cosmetic
 # add_themes                         =
 # severity                           = 3
@@ -448,7 +448,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # explicit Perl version for features used
-[Compatibility::PerlMinimumVersionAndWhy]
+[-Compatibility::PerlMinimumVersionAndWhy]
 # set_themes                         = compatibility pulp
 # add_themes                         =
 # severity                           = 2
@@ -551,7 +551,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Write `if($condition){ do_something() }' instead of `do_something() if $condition'.
-[ControlStructures::ProhibitPostfixControls]
+[-ControlStructures::ProhibitPostfixControls]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -714,7 +714,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Require that all modules that contain POD have a `=encoding utf8' declaration.
-[Documentation::RequirePODUseEncodingUTF8]
+[-Documentation::RequirePODUseEncodingUTF8]
 # set_themes                         = swift unicode
 # add_themes                         =
 # severity                           = 3
@@ -730,7 +730,7 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # All POD should be after `__END__'.
-[Documentation::RequirePodAtEnd]
+[-Documentation::RequirePodAtEnd]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 1
@@ -752,9 +752,9 @@ verbose = %s:%f:%l:%c:%p %m\n
 
 
 # Organize your POD into the customary sections.
-[Documentation::RequirePodSections]
-lib_sections    = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS | AUTHOR | BUGS | SUPPORT | ACKNOWLEDGEMENTS | LICENSE AND COPYRIGHT
-script_sections = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS | AUTHOR | BUGS | SUPPORT | ACKNOWLEDGEMENTS | LICENSE AND COPYRIGHT
+[-Documentation::RequirePodSections]
+#lib_sections    = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS | AUTHOR | BUGS | SUPPORT | ACKNOWLEDGEMENTS | LICENSE AND COPYRIGHT
+#script_sections = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS | AUTHOR | BUGS | SUPPORT | ACKNOWLEDGEMENTS | LICENSE AND COPYRIGHT
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 2
@@ -776,7 +776,7 @@ script_sections = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS |
 
 
 # Per-file editor settings.
-[Editor::RequireEmacsFileVariables]
+[-Editor::RequireEmacsFileVariables]
 # set_themes                         = editor more readability
 # add_themes                         =
 # severity                           = 2
@@ -806,7 +806,7 @@ script_sections = NAME | VERSION | SYNOPSIS | EXPORT | SUBROUTINES AND METHODS |
 
 
 # Use exceptions instead of `die', `croak', or `confess'.
-[ErrorHandling::RequireUseOfExceptions]
+[-ErrorHandling::RequireUseOfExceptions]
 # set_themes                         = maintenance more
 # add_themes                         =
 # severity                           = 4
@@ -1025,7 +1025,7 @@ exclude_functions                    = sleep print
 
 
 # Put source-control keywords in every file.
-[Miscellanea::RequireRcsKeywords]
+[-Miscellanea::RequireRcsKeywords]
 # set_themes                         = cosmetic deprecated pbp
 # add_themes                         =
 # severity                           = 2
@@ -1193,7 +1193,7 @@ exclude_functions                    = sleep print
 
 
 # Require a `use 5.006;' or similar.
-[Modules::RequirePerlVersion]
+[-Modules::RequirePerlVersion]
 # set_themes                         = compatibility more
 # add_themes                         =
 # severity                           = 1
@@ -1201,7 +1201,7 @@ exclude_functions                    = sleep print
 
 
 # Give every module a `$VERSION' number.
-[Modules::RequireVersionVar]
+[-Modules::RequireVersionVar]
 # set_themes                         = core pbp readability
 # add_themes                         =
 # severity                           = 2
@@ -1400,7 +1400,7 @@ file_lexical_variables              = :all_upper
 
 
 # Variable, subroutine, and package names have to be in CamelCase
-[OTRS::RequireCamelCase]
+[-OTRS::RequireCamelCase]
 # set_themes                         = otrs otrs_lt_3_3
 # add_themes                         =
 # severity                           = 5
@@ -1408,7 +1408,7 @@ file_lexical_variables              = :all_upper
 
 
 # Use parens when a method is called
-[OTRS::RequireParensWithMethods]
+[-OTRS::RequireParensWithMethods]
 # set_themes                         = otrs otrs_lt_3_3
 # add_themes                         =
 # severity                           = 5
@@ -1424,7 +1424,7 @@ file_lexical_variables              = :all_upper
 
 
 # Prohibit indirect object call syntax.
-[Objects::ProhibitIndirectSyntax]
+[-Objects::ProhibitIndirectSyntax]
 # set_themes                         = certrule core maintenance pbp
 # add_themes                         =
 # severity                           = 4
@@ -1538,7 +1538,7 @@ file_lexical_variables              = :all_upper
 
 
 # Always use the `/s' modifier with regular expressions.
-[RegularExpressions::RequireDotMatchAnything]
+[-RegularExpressions::RequireDotMatchAnything]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -1546,7 +1546,7 @@ file_lexical_variables              = :all_upper
 
 
 # Always use the `/x' modifier with regular expressions.
-[RegularExpressions::RequireExtendedFormatting]
+[-RegularExpressions::RequireExtendedFormatting]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 3
@@ -1561,7 +1561,7 @@ file_lexical_variables              = :all_upper
 
 
 # Always use the `/m' modifier with regular expressions.
-[RegularExpressions::RequireLineBoundaryMatching]
+[-RegularExpressions::RequireLineBoundaryMatching]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -1593,7 +1593,7 @@ file_lexical_variables              = :all_upper
 # maximum_violations_per_document    = no_limit
 
 
-[Subroutines::ProhibitCallsToUndeclaredSubs]
+[-Subroutines::ProhibitCallsToUndeclaredSubs]
 # set_themes                         = bugs strictersubs
 # add_themes                         =
 # severity                           = 4
@@ -1601,7 +1601,7 @@ file_lexical_variables              = :all_upper
 # Cannot programmatically discover what parameters this policy takes.
 
 
-[Subroutines::ProhibitCallsToUnexportedSubs]
+[-Subroutines::ProhibitCallsToUnexportedSubs]
 # set_themes                         = bugs strictersubs
 # add_themes                         =
 # severity                           = 4
@@ -1709,7 +1709,7 @@ file_lexical_variables              = :all_upper
 
 
 # Always unpack `@_' first.
-[Subroutines::RequireArgUnpacking]
+[-Subroutines::RequireArgUnpacking]
 # set_themes                         = core maintenance pbp
 # add_themes                         =
 # severity                           = 4
@@ -2060,7 +2060,7 @@ file_lexical_variables              = :all_upper
 
 
 # Use `q{}' or `qq{}' instead of quotes for awkward-looking strings.
-[ValuesAndExpressions::ProhibitNoisyQuotes]
+[-ValuesAndExpressions::ProhibitNoisyQuotes]
 # set_themes                         = core cosmetic pbp
 # add_themes                         =
 # severity                           = 2
@@ -2132,7 +2132,7 @@ file_lexical_variables              = :all_upper
 
 
 # Putting the constant value on the left side of an equality exposes typos.
-[ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
+[-ValuesAndExpressions::RequireConstantOnLeftSideOfEquality]
 # set_themes                         = more
 # add_themes                         =
 # severity                           = 2
@@ -2373,3 +2373,5 @@ file_lexical_variables              = :all_upper
 # add_themes                         =
 # severity                           = 4
 # maximum_violations_per_document    = no_limit
+
+[-logicLAB::RequireParamsValidate]
