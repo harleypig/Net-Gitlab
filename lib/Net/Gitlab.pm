@@ -22,10 +22,9 @@ use HTTP::Request ();
 use JSON;
 use LWP::UserAgent ();
 use Params::Validate::Checks ':all';
-use Readonly;
 use Regexp::Common 'Email::Address';
 
-Readonly my $PASSWD_LENGTH = 6;
+my $PASSWD_LENGTH = 6; ## no critic ( ValuesAndExpressions::ProhibitMagicNumbers )
 
 # VERSION
 
