@@ -18,7 +18,7 @@ my %module_build_args = (
     "Alan Young <harleypig\@gmail.com>"
   ],
   "dist_name" => "Net-Gitlab",
-  "dist_version" => "0.04",
+  "dist_version" => "0.05",
   "license" => "perl",
   "module_name" => "Net::Gitlab",
   "recommends" => {},
@@ -38,7 +38,6 @@ my %module_build_args = (
     "Pod::Weaver::Section::SourceGitHub" => 0,
     "Pod::Weaver::Section::Support" => 0,
     "Pod::Weaver::Section::WarrantyDisclaimer" => 0,
-    "Readonly" => 0,
     "Regexp::Common" => 0,
     "Regexp::Common::Email::Address" => 0,
     "namespace::autoclean" => 0,

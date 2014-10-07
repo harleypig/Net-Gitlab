@@ -15,12 +15,11 @@ use HTTP::Request ();
 use JSON;
 use LWP::UserAgent ();
 use Params::Validate::Checks ':all';
-use Readonly;
 use Regexp::Common 'Email::Address';
 
-Readonly my $PASSWD_LENGTH = 6;
+my $PASSWD_LENGTH = 6; ## no critic ( ValuesAndExpressions::ProhibitMagicNumbers )
 
-our $VERSION = '0.04'; # VERSION
+our $VERSION = '0.05'; # VERSION
 
 {  # Hide
 
@@ -642,7 +641,7 @@ Net::Gitlab - Talk to a Gitlab installation via its API.
 
 =head1 VERSION
 
-  This document describes v0.04 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
+  This document describes v0.05 of Net::Gitlab - released October 07, 2014 as part of Net-Gitlab.
 
 =head1 METHODS
 

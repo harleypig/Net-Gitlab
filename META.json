@@ -4,7 +4,7 @@
       "Alan Young <harleypig@gmail.com>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142060",
+   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142690",
    "license" : [
       "perl_5"
    ],
@@ -57,7 +57,6 @@
             "Pod::Weaver::Section::SourceGitHub" : "0",
             "Pod::Weaver::Section::Support" : "0",
             "Pod::Weaver::Section::WarrantyDisclaimer" : "0",
-            "Readonly" : "0",
             "Regexp::Common" : "0",
             "Regexp::Common::Email::Address" : "0",
             "namespace::autoclean" : "0",
@@ -90,6 +89,6 @@
          "web" : "https://github.com/harleypig/Net-Gitlab"
       }
    },
-   "version" : "0.04"
+   "version" : "0.05"
 }
 

@@ -2,7 +2,7 @@ NAME
     Net::Gitlab - Talk to a Gitlab installation via its API.
 
 VERSION
-      This document describes v0.04 of Net::Gitlab - released September 03, 2014 as part of Net-Gitlab.
+      This document describes v0.05 of Net::Gitlab - released October 07, 2014 as part of Net-Gitlab.
 
 METHODS
   new
