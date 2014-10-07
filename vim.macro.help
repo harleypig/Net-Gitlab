@@ -1,0 +1,26 @@
+    #######################################################
+    ## no critic
+
+    # Yank into macro from start of macro: "<letter>Y
+    # Paste letter for edting: "<letter>mp
+
+    # First line (method name, action, path). "m
+    # :.s/\/:id\//\/<project_id>\//:.perldo s/:(.*?)(?:\/|$)/<$1>/g:.s/^\(.\{-}\)\s\+\(.\{-}\)\s\+\(.\{-}\)$/    \1 => {      action => '\2',      path => '\3',/
+    # :.perldo s/:(.*?)(?:\/|$)/<$1>/g:.s/^\(.\{-}\)\s\+\(.\{-}\)\s\+\(.\{-}\)$/    \1 => {      action => '\2',      path => '\3',/
+    # :.s/^\(.\{-}\)\s\+\(.\{-}\)\s\+\(.\{-}\)$/    \1 => {      action => '\2',      path => '\3',/
+
+    # Required line. "r
+    # :.s/^\(required\)\s\+\(.*\)$/      \1 => [qw( \2 )],/
+
+    # Optional line. "o
+    # :.s/^\(optional\)\s\+\(.*\)$/      \1 => [qw( \2 )],/
+
+    # These allow you to do
+
+    # method_name ACTION PATH
+    # required blah blah blah
+    # optional blah blah blah
+
+    ## use critic
+    #######################################################
+

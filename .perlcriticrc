@@ -1009,7 +1009,7 @@ exclude_functions                    = sleep print
 
 
 # Forbid a bare `## no critic'
-[Miscellanea::ProhibitUnrestrictedNoCritic]
+[-Miscellanea::ProhibitUnrestrictedNoCritic]
 # set_themes                         = core maintenance
 # add_themes                         =
 # severity                           = 3
@@ -1880,7 +1880,7 @@ file_lexical_variables              = :all_upper
 # safe_functions =
 
 
-[ValuesAndExpressions::ProhibitAccessOfPrivateData]
+[-ValuesAndExpressions::ProhibitAccessOfPrivateData]
 # set_themes                         = maintenance nits
 # add_themes                         =
 # severity                           = 5
